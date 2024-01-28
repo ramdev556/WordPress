@@ -1,1 +1,76 @@
 
+define('API_ENDPOINT_URL', 'www.example.com');
+define('API_USERNAME', 'username');
+define('API_PASSWORD', 'password');
+
+/**
+ * Wordpress Rest JSON API function for third party api integration 
+ */
+if(!function_exists('wp_custom_rest_api_data')) :
+	function wp_custom_rest_api_data() {
+		lth_log('Inside '.__METHOD__. '()');
+		$body = array(
+			'scope' 		=> 'portal',
+			'grant_type' => 'client_credentials',
+		);
+	    $request_args = array(
+	        'method'      => 'POST',
+	        'timeout'     => 1000,
+	        'sslverify'   => true,
+	        'headers'     => array(
+	            'Content-Type'  => 'application/x-www-form-urlencoded',
+				'Authorization' => 'Basic ' . base64_encode( 'API_USERNAME:API_PASSWORD' )
+	        ),
+	        'body'        => $body,
+	    );
+	    $response = wp_remote_post( API_ENDPOINT_URL, $request_args );
+		
+	    if ( is_wp_error( $response ) || wp_remote_retrieve_response_code( $response ) != 200 ) {
+	    	// show error
+			$apiresult = $response;
+	    } else {
+	    	$response_body = wp_remote_retrieve_body( $response );
+			$apiresult = $response_body;
+		}
+	    return $apiresult;
+	}
+endif;
+
+
+
+
+/**
+ * Wordpress Rest XML API function for third party api integration 
+ */
+if(!function_exists('wp_rest_xml_api_data')) :
+	function wp_rest_xml_api_data() {
+		$xmlapirequest = '<?xml version="1.0"?><request>----xml api request-----</request>';
+		
+		$request_args = array(
+			'method'      => 'POST',
+			'timeout'     => 1000,
+			'headers' => array(
+				'Content-Type' => 'application/x-www-form-urlencoded'
+			),
+			'body' => array(
+				'xml' => $xmlapirequest
+			),
+			'sslverify' => false // Set to true if you want to verify SSL certificates
+		);
+		$apiresult = array();
+		$response = wp_remote_post( API_ENDPOINT_URL, $request_args ); 
+		if ( is_wp_error( $response )  || wp_remote_retrieve_response_code( $response ) != 200) {
+			// Error handling
+			$apiresult = $response->get_error_message();
+
+		} else {
+			// Request was successful
+			$response_body = wp_remote_retrieve_body($response);
+			$apiresult = new SimpleXMLElement($response_body);
+		}
+		
+		return $apiresult;
+		
+	}
+endif;
+
