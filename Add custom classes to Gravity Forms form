@@ -1,0 +1,16 @@
+/**
+ * Add custom classes to Gravity Forms form tag
+ *
+ * @param string $form_tag The default form tag markup.
+ * 21 is form id
+ * @return string Modified form tag markup.
+ */
+function lth_add_custom_gravityforms_form_class( $form_tag ) {
+	// Add your custom wrapper class here
+	$form_class = 'gravity-form-class';
+
+	// Add custom class to form tag
+	$form_tag = str_replace( "class='", "class='$form_class ", $form_tag );
+
+	return $form_tag;
+}
