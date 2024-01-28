@@ -1,0 +1,32 @@
+/**
+ * Get the field ID by label or by the CSS class.
+ *
+ * @param string $field_label The label of the field.
+ * @param string $field_class The CSS class of the field.
+ * @param int    $form_id     The ID of the Gravity Forms form.
+ *
+ * @return int|bool The field ID if found, or false if not found.
+ */
+if(!function_exists('wp_get_gravity_form_fields_id_by_label_or_class')) :
+	function wp_get_gravity_form_fields_id_by_label_or_class( $field_label, $field_class, $form_id ) {
+		$form = GFAPI::get_form( $form_id );
+
+		if ( ! empty( $form ) && isset( $form['fields'] ) ) {
+			foreach ( $form['fields'] as $field ) {
+				
+				if(!empty($field_label)){
+					if ( $field['type'] === 'hidden' && $field['label'] === $field_label ) {
+						return $field['id'];
+					}
+				}elseif(!empty($field_class)){
+					if ( in_array( $field_class, explode( ' ', $field['cssClass'] ) ) ) {
+						return $field['id'];
+					}
+				}
+
+			}
+		}
+
+		return false;
+	}
+endif;
