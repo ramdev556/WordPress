@@ -1,0 +1,205 @@
+/**
+ * Wordpress gravity from custom repeater fields
+ * 21 is form id
+ */
+
+ if(!function_exists('wp_gravity_form_repeater_field'))  {
+
+	add_filter( 'gform_form_post_get_meta_21', 'wp_gravity_form_repeater_field' );
+	
+	function wp_gravity_form_repeater_field( $form ) {
+		if(is_admin()) {
+			return $form;
+		}	
+	
+			$choices = array(
+				array(
+				  'text'       => 'Mr',
+				  'value'      => 'Mr',
+				  'isSelected' => false
+				),
+				array(
+				  'text'       => 'Mrs',
+				  'value'      => 'Mrs',
+				  'isSelected' => false,
+				),
+				array(
+				  'text'       => 'Miss',
+				  'value'      => 'Miss',
+				  'isSelected' => false
+				),
+				array(
+					'text'       => 'Ms',
+					'value'      => 'Ms',
+					'isSelected' => false
+				  ),
+			  );
+	
+			  $gender = array(
+				array(
+				  'text'       => 'Male',
+				  'value'      => 'Male',
+				  'isSelected' => false
+				),
+				array(
+				  'text'       => 'Female',
+				  'value'      => 'Female',
+				  'isSelected' => false,
+				),
+				array(
+				  'text'       => 'Other',
+				  'value'      => 'Other',
+				  'isSelected' => false
+				),
+			  );
+			  
+			// Create a Single Line text field for the team member's name
+			$title = GF_Fields::create( array(
+				'type'   => 'select',
+				'id'     => 2002, // The Field ID must be unique on the form
+				'formId' => $form['id'],
+				'label'  => 'Title',
+				'isRequired'=> true,
+				'pageNumber'  => 1, // Ensure this is correct
+				"cssClass" => "ptitle",
+				'choices' => $choices
+		
+			) );
+		
+			// Create a Single Line text field for the passenger name
+			$pfname = GF_Fields::create( array(
+				'type'   => 'text',
+				'id'     => 2003, // The Field ID must be unique on the form
+				'formId' => $form['id'],
+				"isRequired" => true,
+				'label'  => 'First name',
+				"cssClass" => "pfirstname",
+				'pageNumber'  => 1, // Ensure this is correct
+			) );
+		 
+			// Create an email field for passenger phone
+			$plname = GF_Fields::create( array(
+				'type'   => 'text',
+				'id'     => 2004, // The Field ID must be unique on the form
+				'formId' => $form['id'],
+				"isRequired" => true,
+				'label'  => 'Last name',
+				"cssClass" => "plastname",
+				'pageNumber'  => 1, // Ensure this is correct
+			) );
+		 
+			
+			$pgender = GF_Fields::create( array(
+				'type'   => 'select',
+				'id'     => 2005, // The Field ID must be unique on the form
+				'formId' => $form['id'],
+				'label'  => 'Gender',
+				'isRequired'=> true,
+				'pageNumber'  => 1, // Ensure this is correct
+				"cssClass" => "pgender",
+				'choices' => $gender
+		
+			) );
+			  
+			 // Create an email field for the passenger dob
+			$pdob = GF_Fields::create( array(
+				'type'   => 'date',
+				'id'     => 2006, // The Field ID must be unique on the form
+				'formId' => $form['id'],
+				"isRequired" => true,
+				'label'  => 'DOB',
+				'pageNumber'  => 1, // Ensure this is correct
+				"dateType" => "datedropdown",
+				'dateFormat'    => 'ymd', 
+				"cssClass" => "pdob",
+				"visibility" => "visible",
+			) );
+			
+			// Create an email field for passenger phone
+			$pphone = GF_Fields::create( array(
+				'type'   => 'phone',
+				'id'     => 2007, // The Field ID must be unique on the form
+				'formId' => $form['id'],
+				"isRequired" => true,
+				"cssClass" => "ptelephone",
+				'label'  => 'Phone',
+				'pageNumber'  => 1, // Ensure this is correct
+			) );
+	
+			// Create an email field for passenger email
+			$pemail = GF_Fields::create( array(
+				'type'   => 'text',
+				'id'     => 2008, // The Field ID must be unique on the form
+				'formId' => $form['id'],
+				"isRequired" => true,
+				"cssClass" => "pemail",
+				'label'  => 'Email',
+				'pageNumber'  => 1, // Ensure this is correct
+			) );
+	
+			// Create an email field for passenger address
+			$paddress = GF_Fields::create( array(
+				'type'   => 'text',
+				'id'     => 2009, // The Field ID must be unique on the form
+				'formId' => $form['id'],
+				"isRequired" => true,
+				'label'  => 'Address',
+				"cssClass" => "paddress",
+				'pageNumber'  => 1, // Ensure this is correct
+			) );
+	
+			// Create an email field for passenger city
+			$pcity = GF_Fields::create( array(
+				'type'   => 'text',
+				'id'     => 2010, // The Field ID must be unique on the form
+				'formId' => $form['id'],
+				"isRequired" => true,
+				'label'  => 'City',
+				"cssClass" => "pcity",
+				'pageNumber'  => 1, // Ensure this is correct
+			) );
+	
+			// Create an email field for passenger postcode
+			$postcode = GF_Fields::create( array(
+				'type'   => 'text',
+				'id'     => 2013, // The Field ID must be unique on the form
+				'formId' => $form['id'],
+				"isRequired" => true,
+				'label'  => 'postcode',
+				"cssClass" => "postcode",
+				'pageNumber'  => 1, // Ensure this is correct
+			) );
+		 
+			$passenger = GF_Fields::create( array(
+				'type'             => 'repeater',
+				'description'      => 'Maximum of 4 Passenger - set by the maxItems property',
+				'id'               => 2001, // The Field ID must be unique on the form
+				'formId'           => $form['id'],
+				'label'            => 'Passengers',
+				'addButtonText'    => 'Add Passenger', // Optional
+				'removeButtonText' => 'Remove Passenger', // Optional
+				'maxItems'         => 4, // Optional
+				'pageNumber'       => 1, // Ensure this is correct
+				'fields'           => array( $title, $pfname, $plname, $pgender, $pdob, $pphone, $pemail, $paddress, $pcity, $postcode ), // Add the fields here.
+			) );
+		
+			// Add the repeater field to the form's fields array if it doesn't exist.
+			$repeater_exists = false;
+			foreach ($form['fields'] as $key => $field) {
+				if ($field->type === 'repeater') {
+					$repeater_exists = true;
+					// Move the repeater field to the top
+					array_splice($form['fields'], $key, 1);
+					array_unshift($form['fields'], $passenger);
+					break;
+				}
+			}
+	
+			// If the repeater field doesn't exist in the form, add it at the top
+			if (!$repeater_exists) {
+				array_unshift($form['fields'], $passenger);
+			}
+		return $form;
+	}
+	
+}
