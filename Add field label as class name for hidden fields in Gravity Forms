@@ -1,0 +1,22 @@
+/**
+ * Add field label as class name for hidden fields in Gravity Forms.
+ *
+ * @param array  $classes   The CSS classes assigned to the field.
+ * @param string $field_id  The ID of the field.
+ * @param array  $form      The current form.
+ *
+ * @return array  The modified CSS classes.
+ * 21 is from id
+ */
+function add_field_label_as_class( $classes, $field ) {
+	// Check if the field is hidden and has a label.
+	if ( ( $field->type == 'hidden' ) && ! empty( $field->label ) ) {
+		// Append the field label as a class name.
+		$classes .= ' ' . $field->label;
+	}
+
+	return $classes;
+}
+
+add_filter( 'gform_field_css_class_21', 'add_field_label_as_class', 10, 2 );
+add_filter( 'gform_field_css_class_21', 'add_field_label_as_class', 10, 2 );
